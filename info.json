@@ -1,6 +1,6 @@
 {
     "name":"WrenchFu",
-    "version":"0.1.0",
+    "version":"{{VERSION}}",
     "title":"WrenchFu",
     "author": "Octav \"narc\" Sandulescu",
     "contact": "factorio-mods@narc.ro",

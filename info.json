@@ -1,0 +1,10 @@
+{
+    "name":"WrenchFu",
+    "version":"0.1.0",
+    "title":"WrenchFu",
+    "author": "Octav \"narc\" Sandulescu",
+    "contact": "factorio-mods@narc.ro",
+    "homepage": "https://github.com/narc0tiq/WrenchFu/",
+    "description": "Provides a wrench item for customizing machines in different ways.",
+    "dependencies": ["base >= 0.12.0"]
+}

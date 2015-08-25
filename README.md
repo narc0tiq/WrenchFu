@@ -70,8 +70,9 @@ useful to you (e.g., if you have several tiers of mining drill and you want all
 of them to be wrenchable, but only need two functions to handle that).
 
 
-A mini-mod showing WrenchFu integration will be available on GitHub -- watch
-this space for a link!
+A mini-mod showing WrenchFu integration is available on GitHub -- check it out
+at <https://github.com/narc0tiq/WrenchFu-Demo>.
+
 
 ## License ##
 

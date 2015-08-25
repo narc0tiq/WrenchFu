@@ -1,5 +1,5 @@
 {
-    "name":"WrenchFu",
+    "name":"{{MOD_NAME}}",
     "version":"{{VERSION}}",
     "title":"WrenchFu",
     "author": "Octav \"narc\" Sandulescu",

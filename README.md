@@ -55,11 +55,17 @@ remote.add_interface("My-Mod-Interface", interface)
  suck if your internal state got out of sync with what the player expected.)
 
 
-- finally, and most importantly, your mod needs to register with WrenchFu:
+- finally, and most importantly, your mod needs to register with WrenchFu in
+`on_init` and `on_load` (the registry is not persistent):
 
 ```Lua
--- in control.lua, or somewhere else in the global scope:
-remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
+game.on_init(function()
+    remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
+end)
+
+game.on_load(function()
+    remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
+end)
 ```
 
 And that's all (from WrenchFu's point of view, at least).

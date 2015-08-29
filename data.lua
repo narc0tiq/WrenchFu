@@ -1,19 +1,15 @@
-local wrench_entity =
-{
+local wrench_entity = {
     type = "tree",
     name = "wrenchfu-wrench",
-    icon = "__WrenchFu__/graphics/wrench.png",
     flags = {"placeable-off-grid"},
     max_health = 1,
     pictures = {{
-            filename = "__WrenchFu__/graphics/nil.png",
-            priority = "extra-high",
-            width = 1,
-            height = 1,
-        }
-    },
+        filename = "__WrenchFu__/graphics/nil.png",
+        priority = "extra-high",
+        width = 1,
+        height = 1,
+    }},
 }
-
 
 local wrench_item = {
     type = "item",
@@ -26,4 +22,13 @@ local wrench_item = {
     place_result = "wrenchfu-wrench",
 }
 
-data:extend({wrench_entity, wrench_item})
+local wrench_recipe = {
+    type = "recipe",
+    name = "wrenchfu-wrench",
+    ingredients = {
+        {"steel-plate", 2},
+    },
+    result = "wrenchfu-wrench",
+}
+
+data:extend({wrench_entity, wrench_item, wrench_recipe})

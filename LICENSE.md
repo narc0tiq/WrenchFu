@@ -1,4 +1,4 @@
-WrenchFU is released under the MIT license.  Informally, this means you can
+WrenchFu is released under the MIT license.  Informally, this means you can
 do basically whatever with it you like, as long as you leave this file intact.
 The full legalese is below.
 

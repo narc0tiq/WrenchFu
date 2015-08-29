@@ -72,6 +72,7 @@ end
 
 function WrenchFu.on_tick(event)
     if WrenchFu.max_distance == nil then return end
+    if not global.open_guis then global.open_guis = {} end
 
     for player_index, player in pairs(game.players) do
         if global.open_guis[player_index] == nil then return end

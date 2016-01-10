@@ -20,5 +20,5 @@ local function on_tick(event)
 end
 
 
-game.on_event(defines.events.on_built_entity, on_built_entity)
-game.on_event(defines.events.on_tick, on_tick)
+script.on_event(defines.events.on_built_entity, on_built_entity)
+script.on_event(defines.events.on_tick, on_tick)

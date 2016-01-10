@@ -14,16 +14,17 @@ if not WrenchFu then WrenchFu = {} end
 WrenchFu.max_distance = 6
 
 
-function WrenchFu.open_gui_for(player_index, entity_name, position)
+function WrenchFu.open_gui_for(player_index, entity_name, position, surface_name)
     local reg = WrenchFu.handler_for(entity_name)
 
     global.open_guis[player_index] = {
         ["entity_name"] = entity_name,
         ["position"] = position,
+        ["surface_name"] = surface_name,
         ["handler"] = reg,
     }
 
-    remote.call(reg.mod_name, reg.show_method, player_index, entity_name, position)
+    remote.call(reg.mod_name, reg.show_method, player_index, entity_name, position, surface_name)
 end
 
 
@@ -32,7 +33,7 @@ function WrenchFu.close_gui_for(player_index)
     local gui_data = global.open_guis[player_index]
 
     local reg = gui_data.handler
-    remote.call(reg.mod_name, reg.hide_method, player_index, gui_data.entity_name, gui_data.position)
+    remote.call(reg.mod_name, reg.hide_method, player_index, gui_data.entity_name, gui_data.position, gui_data.surface_name)
 
     global.open_guis[player_index] = nil
 end
@@ -48,7 +49,7 @@ function WrenchFu.open_gui_at(place, player_index)
     for _,v in pairs(ents) do
         if WrenchFu.handler_for(v.name) ~= nil then
             WrenchFu.close_gui_for(player_index)
-            WrenchFu.open_gui_for(player_index, v.name, v.position)
+            WrenchFu.open_gui_for(player_index, v.name, v.position, v.surface.name)
         end
     end
 end

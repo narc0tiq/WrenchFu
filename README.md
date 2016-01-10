@@ -59,11 +59,11 @@ remote.add_interface("My-Mod-Interface", interface)
 `on_init` and `on_load` (the registry is not persistent):
 
 ```Lua
-game.on_init(function()
+script.on_init(function()
     remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
 end)
 
-game.on_load(function()
+script.on_load(function()
     remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
 end)
 ```

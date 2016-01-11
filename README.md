@@ -39,11 +39,11 @@ info.json, and ensures your mod loads after WrenchFu:
 ```Lua
 local interface = {}
 
-function interface.show_my_gui(player_index, entity_name, position)
+function interface.show_my_gui(player_index, entity_name, position, surface_name)
     -- Do stuff here to show your GUI; anything you like!
 end
 
-function interface.hide_my_gui(player_index, entity_name, position)
+function interface.hide_my_gui(player_index, entity_name, position, surface_name)
     -- Do stuff here to hide your GUI; again, anything you like!
 end
 

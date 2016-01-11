@@ -45,11 +45,12 @@ function WrenchFu.open_gui_at(place, player_index)
     local player = game.get_player(player_index)
     if not player then return end
 
+    local surface_name = player.surface.name
     local ents = player.surface.find_entities({place, place})
     for _,v in pairs(ents) do
         if WrenchFu.handler_for(v.name) ~= nil then
             WrenchFu.close_gui_for(player_index)
-            WrenchFu.open_gui_for(player_index, v.name, v.position, v.surface.name)
+            WrenchFu.open_gui_for(player_index, v.name, v.position, surface_name)
         end
     end
 end

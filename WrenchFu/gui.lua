@@ -33,7 +33,7 @@ function WrenchFu.close_gui_for(player_index,entity_name)
     local gui_data = global.open_guis[player_index][entity_name]
 
     local reg = gui_data.handler
-    remote.call(reg.mod_name, reg.hide_method, player_index, gui_data.entity_name, gui_data.position)
+    remote.call(reg.mod_name, reg.hide_method, player_index, entity_name, gui_data.position)
 
     global.open_guis[player_index][entity_name] = nil
 end
@@ -82,7 +82,7 @@ function WrenchFu.on_tick(event)
             for entity_name,gui_data in pairs(global.open_guis[player_index]) do
                 if not gui_data.handler.max_distance then 
                     if util.distance(player.position, gui_data.position) > gui_data.handler.max_distance then
-                        WrenchFu.close_gui_for(player_index)
+                        WrenchFu.close_gui_for(player_index,entity_name)
                     end
                 end
             end

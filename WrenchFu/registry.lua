@@ -13,7 +13,7 @@ function interface.register(entity_name, mod_name, show_method, hide_method, max
     end
     
     no_interlace_with = no_interlace_with or {}
-    no_interlace_with.[entity_name]=true
+    no_interlace_with[entity_name]=true
     
     handler_registry[entity_name] = {
         mod_name = mod_name,

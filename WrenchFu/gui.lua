@@ -11,14 +11,14 @@ Tweakable:
 ]]
 
 if not WrenchFu then WrenchFu = {} end
-WrenchFu.max_distance = 6
 
 
 function WrenchFu.open_gui_for(player_index, entity_name, position)
     local reg = WrenchFu.handler_for(entity_name)
-
-    global.open_guis[player_index] = {
-        ["entity_name"] = entity_name,
+    
+    global.open_guis[player_index] = global.open_guis[player_index] or {}
+    
+    global.open_guis[player_index][entity_name] = {
         ["position"] = position,
         ["handler"] = reg,
     }
@@ -27,14 +27,15 @@ function WrenchFu.open_gui_for(player_index, entity_name, position)
 end
 
 
-function WrenchFu.close_gui_for(player_index)
+function WrenchFu.close_gui_for(player_index,entity_name)
     if global.open_guis[player_index] == nil then return end
-    local gui_data = global.open_guis[player_index]
+    if global.open_guis[player_index][entity_name] == nil then return end
+    local gui_data = global.open_guis[player_index][entity_name]
 
     local reg = gui_data.handler
     remote.call(reg.mod_name, reg.hide_method, player_index, gui_data.entity_name, gui_data.position)
 
-    global.open_guis[player_index] = nil
+    global.open_guis[player_index][entity_name] = nil
 end
 
 
@@ -47,7 +48,9 @@ function WrenchFu.open_gui_at(place, player_index)
     local ents = player.surface.find_entities({place, place})
     for _,v in pairs(ents) do
         if WrenchFu.handler_for(v.name) ~= nil then
-            WrenchFu.close_gui_for(player_index)
+            for name in pairs(WrenchFu.handler_for(v.name).no_interlace_with) do
+                WrenchFu.close_gui_for(player_index,name)
+            end
             WrenchFu.open_gui_for(player_index, v.name, v.position)
         end
     end
@@ -76,10 +79,14 @@ function WrenchFu.on_tick(event)
 
     for player_index, player in pairs(game.players) do
         if global.open_guis[player_index] == nil then return end
-        local gui_data = global.open_guis[player_index]
-
-        if util.distance(player.position, gui_data.position) > WrenchFu.max_distance then
-            WrenchFu.close_gui_for(player_index)
+        local guis = global.open_guis[player_index]
+        
+        for entity_name,gui_data in pairs(guis) do
+            if not gui_data.handler.max_distance then 
+                if util.distance(player.position, gui_data.position) > gui_data.handler.max_distance then
+                    WrenchFu.close_gui_for(player_index)
+                end
+            end
         end
     end
 end

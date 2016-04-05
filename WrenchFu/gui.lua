@@ -75,11 +75,11 @@ function WrenchFu.on_tick(event)
     if not global.open_guis then global.open_guis = {} end
 
     for player_index, player in pairs(game.players) do
-        if global.open_guis[player_index] == nil then return end
-        local gui_data = global.open_guis[player_index]
-
-        if util.distance(player.position, gui_data.position) > WrenchFu.max_distance then
-            WrenchFu.close_gui_for(player_index)
+        if global.open_guis[player_index] then 
+            local gui_data = global.open_guis[player_index]
+            if util.distance(player.position, gui_data.position) > WrenchFu.max_distance then
+                WrenchFu.close_gui_for(player_index)
+            end
         end
     end
 end

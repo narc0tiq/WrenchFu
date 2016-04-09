@@ -21,9 +21,9 @@ sure to close the custom interface so that it doesn't get in your way.
 
 So, you wanna use WrenchFu on your machines? Not much to it:
 
-- your mod should depend on WrenchFu (optionally, or not, depending on whether
-you think your mod could run without the wrenchability). This goes in your
-info.json, and ensures your mod loads after WrenchFu:
+- your mod should depend on WrenchFu (optionally or not, depending on whether
+your mod could run without the wrenchability). This goes in your info.json, and
+ensures your mod loads after WrenchFu:
 
 ```JSON
 {

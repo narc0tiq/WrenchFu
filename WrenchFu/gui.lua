@@ -13,17 +13,17 @@ Tweakable:
 if not WrenchFu then WrenchFu = {} end
 
 
-function WrenchFu.open_gui_for(player_index, entity_name, position)
-    local reg = WrenchFu.handler_for(entity_name)
+function WrenchFu.open_gui_for(player_index, entity)
+    local reg = WrenchFu.handler_for(entity.name)
     
     global.open_guis[player_index] = global.open_guis[player_index] or {}
     
-    global.open_guis[player_index][entity_name] = {
-        ["position"] = position,
+    global.open_guis[player_index][entity.name] = {
+        ["position"] = entity.position,
         ["handler"] = reg,
     }
 
-    remote.call(reg.mod_name, reg.show_method, player_index, entity_name, position)
+    remote.call(reg.mod_name, reg.show_method, player_index, entity)
 end
 
 
@@ -33,11 +33,16 @@ function WrenchFu.close_gui_for(player_index,entity_name)
     local gui_data = global.open_guis[player_index][entity_name]
 
     local reg = gui_data.handler
-    remote.call(reg.mod_name, reg.hide_method, player_index, entity_name, gui_data.position)
-
-    global.open_guis[player_index][entity_name] = nil
+    if remote.call(reg.mod_name, reg.hide_method, player_index, entity_name, gui_data.position) then
+        global.open_guis[player_index][entity_name] = nil
+    end
 end
 
+function WrenchFu.close_gui_unconditionally(player_index,entity_name)
+    if global.open_guis[player_index] == nil then return end
+    if global.open_guis[player_index][entity_name] == nil then return end
+    global.open_guis[player_index][entity_name] = nil
+end
 
 function WrenchFu.open_gui_at(place, player_index)
     if not global.open_guis then global.open_guis = {} end
@@ -48,10 +53,13 @@ function WrenchFu.open_gui_at(place, player_index)
     local ents = player.surface.find_entities({place, place})
     for _,v in pairs(ents) do
         if WrenchFu.handler_for(v.name) ~= nil then
-            for name in pairs(WrenchFu.handler_for(v.name).no_interlace_with) do
-                WrenchFu.close_gui_for(player_index,name)
+            local can=true
+            for _,name in pairs(WrenchFu.handler_for(v.name).no_interlace_with) do
+                can= WrenchFu.close_gui_for(player_index,name) and can
             end
-            WrenchFu.open_gui_for(player_index, v.name, v.position)
+            if can then 
+                WrenchFu.open_gui_for(player_index, v)
+            end
         end
     end
 end

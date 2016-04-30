@@ -55,17 +55,43 @@ remote.add_interface("My-Mod-Interface", interface)
  suck if your internal state got out of sync with what the player expected.)
 
 
-- finally, and most importantly, your mod needs to register with WrenchFu in
-`on_init` and `on_load` (the registry is not persistent):
+- finally, and most importantly, your mod needs to register with WrenchFu. WrenchFu has the following interface:
+```Lua
+register=function(entity_name, handler_param)
+    --[[this one registers the handler, which is going to be called when player uses Wrench onto the entity_name
+        handler_param is the following table
+        {
+            mod_name = mod_name,--name of your interface (mandatory)
+            show_method = show_method, 
+            --[[name of function in your interface, which should be called whe entity_name is wrenched (mandatory)
+            is function(player_index, entity), entity is game object here
+            ]]
+            hide_method = hide_method,
+            --[[name of function to call when wrench is used on empty ground or player moved too far or a specific other entity if clicked with wrench 
+            is function(player_index, entity_name, entity_position)
+            must return true if it is allowed to close the gui
+            ]]
+            max_distance = max_distance,
+            --max distance player can move away from entity before gui is closed, if nil - unlimited
+            no_interlace_with = no_interlace_with 
+            --[[names of other entities, which guis should be closed when gui for this entity is opened
+            will always attempt to close gui for the same named entity.
+            ]]
+        }
+    ]]
+    close=function(player_index,entity_name)
+    --[[should be called when your gui is closed not by WrenchFu facilities.
+    cleans up the related data in this mod
+    ]]
+    ```
+-Thus to register your entity, you need to put the following into `on_init` and `on_load` (or just into body of control.lua):
 
 ```Lua
-script.on_init(function()
-    remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
-end)
-
-script.on_load(function()
-    remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
-end)
+    remote.call("WrenchFu", "register", "my-machine-name", {
+        mod_name = "My-Mod-Interface", 
+        show_method = "show_my_gui",
+        hide_method = "hide_my_gui",
+        max_distance = 30})
 ```
 
 And that's all (from WrenchFu's point of view, at least).

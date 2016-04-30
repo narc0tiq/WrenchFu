@@ -83,7 +83,7 @@ register=function(entity_name, handler_param)
     --[[should be called when your gui is closed not by WrenchFu facilities.
     cleans up the related data in this mod
     ]]
-    ```
+```
 -Thus to register your entity, you need to put the following into `on_init` and `on_load` (or just into body of control.lua):
 
 ```Lua

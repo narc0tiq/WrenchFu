@@ -56,12 +56,18 @@ function WrenchFu.open_gui_at(place, player_index)
     local ents = player.surface.find_entities({place, place})
     for _,v in pairs(ents) do
         if WrenchFu.handler_for(v.name) ~= nil then
-            local can=true
-            for _,name in pairs(WrenchFu.handler_for(v.name).no_interlace_with) do
-                can= WrenchFu.close_gui_for(player_index,name) and can
-            end
-            if can then 
-                WrenchFu.open_gui_for(player_index, v)
+            if  not global.open_guis[player_index][v.name] then
+                --opening new gui
+                local can=true
+                for _,name in pairs(WrenchFu.handler_for(v.name).no_interlace_with) do
+                    can= WrenchFu.close_gui_for(player_index,name) and can
+                end
+                if can then 
+                    WrenchFu.open_gui_for(player_index, v)
+                end
+            else 
+                --closing the existing gui
+                WrenchFu.close_gui_for(player_index,v.name)
             end
         end
     end

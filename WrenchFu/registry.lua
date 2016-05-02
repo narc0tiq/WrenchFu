@@ -7,7 +7,7 @@ local handler_registry = {}
 
 interface = {}
 function interface.register(entity_name, arg1, show_method, hide_method, max_distance)
-    if type(arg2)=="table" then
+    if type(arg1)=="table" then
         --arg1= handler_params
         interface.register_new(entity_name,arg1)
     elseif show_method then

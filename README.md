@@ -42,6 +42,11 @@ local interface = {}
 function interface.show_my_gui(player_index, entity_name, position)
     -- Do stuff here to show your GUI; anything you like!
 end
+--[[
+    alternately, this could be:
+        function interface.show_my_gui(player, entity)
+    by changing some options you'll see below.
+]]
 
 function interface.hide_my_gui(player_index, entity_name, position)
     -- Do stuff here to hide your GUI; again, anything you like!
@@ -55,25 +60,43 @@ remote.add_interface("My-Mod-Interface", interface)
  suck if your internal state got out of sync with what the player expected.)
 
 
-- finally, and most importantly, your mod needs to register with WrenchFu in
-`on_init` and `on_load` (the registry is not persistent):
+- finally, and most importantly, your mod needs to register with WrenchFu
+whenever it runs (the registry is not persistent, similar to how
+`remote.add_interface` is non-persistent):
 
 ```Lua
-script.on_init(function()
-    remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
-end)
-
-script.on_load(function()
-    remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
-end)
+remote.call("WrenchFu", "register", "my-machine-name", "My-Mod-Interface", "show_my_gui", "hide_my_gui")
 ```
 
-And that's all (from WrenchFu's point of view, at least).
+When registering, you can also pass in a table of options to configure how you
+want WrenchFu to act:
+```Lua
+local options = {
+    -- change how far "too far to remain open" is for your GUI:
+    proximity_distance = 12,
+
+    -- ask for an entity reference instead of name and position to be passed to your
+    -- show_function:
+    wants_entity = true,
+
+    -- ask for a player reference instead of a player index to be passed to
+    -- your show_function:
+    wants_player = true,
+}
+
+remote.call("WrenchFu", "register", "some-machine", "My-Mod-Interface", "show_my_gui", "hide_my_gui", options)
+```
+
+You may also replace the "hide\_my\_gui" function with a nil, if you don't need it:
+
+```Lua
+remote.call("WrenchFu", "register", "some-other-machine", "My-Mod-Interface", "show_my_gui", nil, options)
+```
 
 You should note that only one handler can be registered for any given machine,
 but that the same handler can be registered to multiple machines, if that's
 useful to you (e.g., if you have several tiers of mining drill and you want all
-of them to be wrenchable, but only need two functions to handle that).
+of them to be wrenchable, you can use only two functions to handle that).
 
 
 A mini-mod showing WrenchFu integration is available on GitHub -- check it out
